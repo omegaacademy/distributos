@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Distribuidores OMEGA Pigments</title>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-primary: #ffffff;
+            --text-secondary: #b0b0b0;
+            --accent: #ef6c00;
+            --accent-light: #ff9d3f;
+            --border-color: #333333;
+            --success: #4caf50;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .top-distributor {
+            background-color: var(--card-bg);
+            border-left: 4px solid var(--accent);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .top-distributor::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, var(--accent-light), transparent);
+            opacity: 0.1;
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-150%); }
+            100% { transform: translateX(150%); }
+        }
+
+        .top-distributor h2 {
+            color: var(--accent);
+            margin-bottom: 10px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .top-distributor h2 svg {
+            margin-right: 10px;
+        }
+
+        .top-info {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .location-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--card-bg);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .location-btn:hover {
+            background-color: var(--accent);
+            color: var(--text-primary);
+            border-color: var(--accent);
+        }
+
+        .section-title {
+            margin: 20px 0 15px 0;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            color: var(--accent);
+            font-size: 1.3rem;
+        }
+
+        .states-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .state-card {
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .state-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        .state-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .state-name {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .distributor-count {
+            background-color: var(--accent);
+            color: var(--text-primary);
+            border-radius: 20px;
+            padding: 2px 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .state-toggle {
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+        }
+
+        .state-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .distributors-list {
+            display: none;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 15px;
+        }
+
+        .distributors-list.open {
+            display: flex;
+        }
+
+        .distributor-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            padding: 12px;
+            transition: all 0.3s ease;
+            display: flex;
+            gap: 15px;
+        }
+
+        .distributor-card:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .official-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background-color: rgba(239, 108, 0, 0.1);
+            color: var(--accent);
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-bottom: 5px;
+        }
+
+        .distributor-photo {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            object-fit: cover;
+            background-color: var(--card-bg);
+            flex-shrink: 0;
+            border: 2px solid var(--accent);
+        }
+
+        .distributor-content {
+            flex: 1;
+        }
+
+        .distributor-name {
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .distributor-info {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 5px;
+        }
+
+        .distributor-contact {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 5px 10px;
+            border-radius: 20px;
+        }
+
+        .contact-item.whatsapp {
+            color: #25D366;
+        }
+
+        .contact-item.instagram {
+            color: #E1306C;
+        }
+
+        .contact-item:hover {
+            background-color: var(--accent);
+            color: var(--text-primary);
+        }
+
+        .search-bar {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            border: none;
+            border-radius: 8px;
+            background-color: var(--card-bg);
+            color: var(--text-primary);
+            font-size: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            box-shadow: 0 0 0 2px var(--accent);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+        }
+
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background-color: var(--accent);
+            color: var(--text-primary);
+            border-color: var(--accent);
+        }
+
+        .distance-info {
+            font-size: 0.85rem;
+            color: var(--accent);
+            margin-top: 4px;
+            font-style: italic;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-secondary);
+            background-color: var(--card-bg);
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Media Queries */
+        @media (min-width: 768px) {
+            .top-distributor {
+                padding: 20px;
+            }
+
+            .top-info {
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 20px;
+            }
+
+            .distributor-info {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 10px;
+            }
+        }
+
+        @media (min-width: 992px) {
+            .container {
+                padding: 30px;
+            }
+
+            .states-list {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+            
+            /* Fix for independent card expansion */
+            .state-card {
+                height: auto;
+                min-height: 60px;
+            }
+            
+            .state-card .distributors-list.open {
+                display: flex;
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="top-distributor" id="topDistributor">
+            <h2>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z" fill="#EF6C00" stroke="#EF6C00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                Distribuidor Superior
+            </h2>
+            <div class="top-info">
+                <p>Buscando su ubicación...</p>
+            </div>
+        </div>
+        
+        <button class="location-btn" id="locationBtn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 8C9.79 8 8 9.79 8 12C8 14.21 9.79 16 12 16C14.21 16 16 14.21 16 12C16 9.79 14.21 8 12 8ZM20.94 11C20.48 6.83 17.17 3.52 13 3.06V2C13 1.45 12.55 1 12 1C11.45 1 11 1.45 11 2V3.06C6.83 3.52 3.52 6.83 3.06 11H2C1.45 11 1 11.45 1 12C1 12.55 1.45 13 2 13H3.06C3.52 17.17 6.83 20.48 11 20.94V22C11 22.55 11.45 23 12 23C12.55 23 13 22.55 13 22V20.94C17.17 20.48 20.48 17.17 20.94 13H22C22.55 13 23 12.55 23 12C23 11.45 22.55 11 22 11H20.94ZM12 19C8.13 19 5 15.87 5 12C5 8.13 8.13 5 12 5C15.87 5 19 8.13 19 12C19 15.87 15.87 19 12 19Z" fill="#B0B0B0"/>
+            </svg>
+            Encontrar distribuidores cercanos
+        </button>
+
+        <div class="search-bar">
+            <svg class="search-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M11 19C15.4183 19 19 15.4183 19 11C19 6.58172 15.4183 3 11 3C6.58172 3 3 6.58172 3 11C3 15.4183 6.58172 19 11 19Z" stroke="#B0B0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M21 21L16.65 16.65" stroke="#B0B0B0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input type="text" class="search-input" id="searchInput" placeholder="Buscar distribuidor por nombre, estado o país...">
+        </div>
+
+        <div class="filters">
+            <button class="filter-btn active" data-filter="all">Todos</button>
+            <button class="filter-btn" data-filter="mexico">México</button>
+            <button class="filter-btn" data-filter="international">Internacional</button>
+        </div>
+
+        <h3 class="section-title">Distribuidores en México</h3>
+        <div class="states-list" id="mexicoStates"></div>
+
+        <h3 class="section-title">Distribuidores Internacionales</h3>
+        <div class="states-list" id="internationalStates"></div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const topDistributorEl = document.getElementById('topDistributor');
+        const mexicoStatesEl = document.getElementById('mexicoStates');
+        const internationalStatesEl = document.getElementById('internationalStates');
+        const searchInputEl = document.getElementById('searchInput');
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const locationBtn = document.getElementById('locationBtn');
+
+        // Global Variables
+        let userLocation = null;
+        let closestDistributor = null;
+
+        // Direct image URL for consistent display
+        const defaultPhoto = 'https://storage.googleapis.com/msgsndr/LDanuKl7ixzBLqTPU7mW/media/67c0d57f47776779b311625e.png';
+
+        // Calculate distance between two coordinates using Haversine formula
+        function calculateDistance(lat1, lon1, lat2, lon2) {
+            const R = 6371; // Radius of the earth in km
+            const dLat = (lat2 - lat1) * Math.PI / 180;
+            const dLon = (lon2 - lon1) * Math.PI / 180;
+            const a = 
+                Math.sin(dLat/2) * Math.sin(dLat/2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
+                Math.sin(dLon/2) * Math.sin(dLon/2);
+            const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            const distance = R * c; // Distance in km
+            return distance;
+        }
+
+        // Get all distributors from both Mexico and international
+        function getAllDistributors() {
+            const allDistributors = [];
+            
+            // Add Mexico distributors
+            distributorsData.mexico.forEach(state => {
+                state.distributors.forEach(distributor => {
+                    allDistributors.push({
+                        ...distributor,
+                        location: state.state,
+                        country: "México",
+                        type: "mexico"
+                    });
+                });
+            });
+            
+            // Add international distributors
+            distributorsData.international.forEach(country => {
+                country.distributors.forEach(distributor => {
+                    allDistributors.push({
+                        ...distributor,
+                        location: country.country,
+                        country: country.country,
+                        type: "international"
+                    });
+                });
+            });
+            
+            return allDistributors;
+        }
+
+        // Datos reales de los distribuidores (todos usando la misma foto)
+        const distributorsData = {
+            mexico: [
+                {
+                    state: "Baja California",
+                    distributors: [
+                        {
+                            name: "Karen Aguilar",
+                            city: "Tijuana",
+                            address: "",
+                            whatsapp: "https://wa.me/6644199209",
+                            instagram: "https://www.instagram.com/karen.aguilar_pmu",
+                            photo: defaultPhoto,
+                            lat: 32.5149,
+                            lng: -117.0382
+                        }
+                    ]
+                },
+                {
+                    state: "Chiapas",
+                    distributors: [
+                        {
+                            name: "Karen Solorzano",
+                            city: "Tuxtla",
+                            address: "",
+                            whatsapp: "https://wa.me/525555031505",
+                            instagram: "https://www.instagram.com/PMU_karen_solorzano",
+                            photo: defaultPhoto,
+                            lat: 16.7506,
+                            lng: -93.1029
+                        }
+                    ]
+                },
+                {
+                    state: "Chihuahua",
+                    distributors: [
+                        {
+                            name: "Selene Navarro",
+                            city: "Chihuahua",
+                            address: "",
+                            whatsapp: "https://wa.me/526251226187",
+                            instagram: "https://www.instagram.com/micropigmentacionymicrobelleza",
+                            photo: defaultPhoto,
+                            lat: 28.6353,
+                            lng: -106.0889
+                        }
+                    ]
+                },
+                {
+                    state: "Ciudad de México",
+                    distributors: [
+                        {
+                            name: "OMEGA Academy",
+                            city: "CDMX",
+                            address: "",
+                            whatsapp: "https://wa.me/5215596626557",
+                            instagram: "https://www.instagram.com/omegaAcademy.MX/",
+                            photo: defaultPhoto,
+                            lat: 19.4326,
+                            lng: -99.1332
+                        }
+                    ]
+                },
+                {
+                    state: "Estado de México",
+                    distributors: [
+                        {
+                            name: "Paola Rubio Badillo",
+                            city: "Piramides",
+                            address: "",
+                            whatsapp: "https://wa.me/525583693742",
+                            instagram: "https://www.instagram.com/paola_studio29",
+                            photo: defaultPhoto,
+                            lat: 19.7368,
+                            lng: -98.9875
+                        }
+                    ]
+                },
+                {
+                    state: "Guerrero",
+                    distributors: [
+                        {
+                            name: "Soledad Carrillo",
+                            city: "Acapulco",
+                            address: "",
+                            whatsapp: "https://wa.me/527451071206",
+                            instagram: "https://www.instagram.com/Sol Lash & Nails",
+                            photo: defaultPhoto,
+                            lat: 16.8531,
+                            lng: -99.8237
+                        }
+                    ]
+                },
+                {
+                    state: "Jalisco",
+                    distributors: [
+                        {
+                            name: "Verónica Trujillo Rodriguez",
+                            city: "Guadalajara",
+                            address: "",
+                            whatsapp: "https://wa.me/523329030784",
+                            instagram: "https://www.instagram.com/luvench.cosmetik",
+                            photo: defaultPhoto,
+                            lat: 20.6597,
+                            lng: -103.3496
+                        }
+                    ]
+                },
+                {
+                    state: "Oaxaca",
+                    distributors: [
+                        {
+                            name: "Fantasy A Oaxaca",
+                            city: "Oaxaca",
+                            address: "",
+                            whatsapp: "https://wa.me/529512323392",
+                            instagram: "https://www.instagram.com/Fantasy.a_oax",
+                            photo: defaultPhoto,
+                            lat: 17.0732,
+                            lng: -96.7266
+                        }
+                    ]
+                },
+                {
+                    state: "Quintana Roo",
+                    distributors: [
+                        {
+                            name: "Nayely Arjona",
+                            city: "Cancun",
+                            address: "",
+                            whatsapp: "https://wa.me/529871034295",
+                            instagram: "https://www.instagram.com/estudiolashnaxe",
+                            photo: defaultPhoto,
+                            lat: 21.1619,
+                            lng: -86.8515
+                        },
+                        {
+                            name: "Wendy Ortiz",
+                            city: "Cancun",
+                            address: "",
+                            whatsapp: "https://wa.me/9981198539",
+                            instagram: "https://www.instagram.com/wendyortiz_microblading",
+                            photo: defaultPhoto,
+                            lat: 21.1619,
+                            lng: -86.8515
+                        }
+                    ]
+                },
+                {
+                    state: "Tabasco",
+                    distributors: [
+                        {
+                            name: "Judith Ruiz",
+                            city: "Villahermosa",
+                            address: "",
+                            whatsapp: "https://wa.me/529933836267",
+                            instagram: "https://www.instagram.com/judderuc",
+                            photo: defaultPhoto,
+                            lat: 17.9892,
+                            lng: -92.9281
+                        },
+                        {
+                            name: "Carolina Montejo",
+                            city: "Villahermosa",
+                            address: "",
+                            whatsapp: "https://wa.me/529142794822",
+                            instagram: "https://www.instagram.com/karitomonherlashpmu",
+                            photo: defaultPhoto,
+                            lat: 17.9892,
+                            lng: -92.9281
+                        }
+                    ]
+                },
+                {
+                    state: "Veracruz",
+                    distributors: [
+                        {
+                            name: "Marge Brows",
+                            city: "Coatzacoalcos",
+                            address: "",
+                            whatsapp: "https://wa.me/519212506731",
+                            instagram: "https://www.instagram.com/margebrows",
+                            photo: defaultPhoto,
+                            lat: 18.1342,
+                            lng: -94.4580
+                        },
+                        {
+                            name: "Arco Distribuidora de productos de cejas y pestañas",
+                            city: "Veracruz",
+                            address: "",
+                            whatsapp: "https://wa.me/522295065836",
+                            instagram: "https://www.instagram.com/arcodistribuidora.ver",
+                            photo: defaultPhoto,
+                            lat: 19.1738,
+                            lng: -96.1342
+                        }
+                    ]
+                }
+            ],
+            international: [
+                {
+                    country: "Argentina",
+                    distributors: [
+                        {
+                            name: "Milena Marin y Mariano Fragueiro",
+                            city: "Buenos Aires",
+                            address: "",
+                            whatsapp: "https://wa.me/5491150081293",
+                            instagram: "https://www.instagram.com/milenamarinbrows",
+                            photo: defaultPhoto,
+                            lat: -34.6037,
+                            lng: -58.3816
+                        }
+                    ]
+                },
+                {
+                    country: "Chile",
+                    distributors: [
+                        {
+                            name: "Carolina Sanguinetti",
+                            city: "Santiago de Chile",
+                            address: "",
+                            whatsapp: "https://wa.me/56964144714",
+                            instagram: "https://www.instagram.com/insumospmu.cl",
+                            photo: defaultPhoto,
+                            lat: -33.4489,
+                            lng: -70.6693
+                        }
+                    ]
+                },
+                {
+                    country: "Colombia",
+                    distributors: [
+                        {
+                            name: "Leidy Valencia",
+                            city: "Medellin",
+                            address: "",
+                            whatsapp: "https://wa.me/573233863787",
+                            instagram: "https://www.instagram.com/omegacolombiaoficial",
+                            photo: defaultPhoto,
+                            lat: 6.2476,
+                            lng: -75.5658
+                        },
+                        {
+                            name: "Lorena Correa",
+                            city: "Medellin",
+                            address: "",
+                            whatsapp: "https://wa.me/573216200867",
+                            instagram: "https://www.instagram.com/omegaincolombia",
+                            photo: defaultPhoto,
+                            lat: 6.2476,
+                            lng: -75.5658
+                        }
+                    ]
+                },
+                {
+                    country: "Colombia y Pánama",
+                    distributors: [
+                        {
+                            name: "Lismar Duarte",
+                            city: "Colombia y Pánama",
+                            address: "",
+                            whatsapp: "https://wa.me/573102147390",
+                            instagram: "https://www.instagram.com/martinaduartevip",
+                            photo: defaultPhoto,
+                            lat: 8.5380,
+                            lng: -80.7821
+                        }
+                    ]
+                },
+                {
+                    country: "Costa Rica",
+                    distributors: [
+                        {
+                            name: "Indiana Rivera",
+                            city: "Origina",
+                            address: "",
+                            whatsapp: "https://wa.me/50687711221",
+                            instagram: "https://www.instagram.com/microbladingindianarivera",
+                            photo: defaultPhoto,
+                            lat: 9.9281,
+                            lng: -84.0907
+                        },
+                        {
+                            name: "Nahomi Daniela Sanchez",
+                            city: "San José",
+                            address: "",
+                            whatsapp: "https://wa.me/50672348494",
+                            instagram: "https://www.instagram.com/dr.inksuministros",
+                            photo: defaultPhoto,
+                            lat: 9.9281,
+                            lng: -84.0907
+                        }
+                    ]
+                },
+                {
+                    country: "Dominican Republic",
+                    distributors: [
+                        {
+                            name: "Katiuska Villamizar",
+                            city: "Santo Domingo",
+                            address: "",
+                            whatsapp: "https://wa.me/18494529934",
+                            instagram: "https://www.instagram.com/katiuskavr",
+                            photo: defaultPhoto,
+                            lat: 18.4861,
+                            lng: -69.9312
+                        }
+                    ]
+                },
+                {
+                    country: "Ecuador",
+                    distributors: [
+                        {
+                            name: "Jorge Diaz",
+                            city: "Machala",
+                            address: "",
+                            whatsapp: "https://wa.me/593939941359",
+                            instagram: "https://www.instagram.com/jorgediaz_pmu",
+                            photo: defaultPhoto,
+                            lat: -3.2582,
+                            lng: -79.9605
+                        },
+                        {
+                            name: "Gabriela Quezada",
+                            city: "Machala",
+                            address: "",
+                            whatsapp: "https://wa.me/593939941021",
+                            instagram: "https://www.instagram.com/gabrielaquezadastudio",
+                            photo: defaultPhoto,
+                            lat: -3.2582,
+                            lng: -79.9605
+                        }
+                    ]
+                },
+                {
+                    country: "Guatemala",
+                    distributors: [
+                        {
+                            name: "Vivin Villegas",
+                            city: "Coatepec",
+                            address: "",
+                            whatsapp: "https://wa.me/50239976020",
+                            instagram: "https://www.instagram.com/omegaguatemala",
+                            photo: defaultPhoto,
+                            lat: 19.4513,
+                            
